@@ -1,0 +1,22 @@
+{
+    "name": "fernando/mailsender",
+    "description": "Mail Sender php",
+    "type": "project",
+    "require": {
+        "php-amqplib/php-amqplib": "^3.6",
+        "symfony/mailer": "^7.0"
+    },
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Fernando\\Mailsender\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Fernando Linhares",
+            "email": "fernandomadethat@gmail.com"
+        }
+    ],
+    "minimum-stability": "stable"
+}

@@ -1,0 +1,45 @@
+version: '3.9'
+
+services:
+  mailsender.queue:
+    container_name: mailsender.queue
+    image: php:8.2-cli
+    ports:
+      - '9088:80'
+    working_dir: /usr/src
+    volumes:
+      - '.:/usr/src'
+    command: ["php", "queue.php"]
+    networks:
+      - mailsender.network
+
+  mailsender.rabbitmq:
+    container_name: mailsender.rabbitmq
+    image: rabbitmq:3.8-management
+    ports:
+      - '5672:15672'
+    networks:
+        - mailsender.network
+
+  mailsender.mailpit:
+    image: axllent/mailpit
+    container_name: mailsender.mailpit
+    restart: always
+    volumes:
+      - ./data:/data
+    ports:
+      - '8025:8025'
+      - '1025:1025'
+    environment:
+      MP_MAX_MESSAGES: 5000
+      MP_DATA_FILE: /data/mailpit.db
+      MP_SMTP_AUTH_ACCEPT_ANY: 1
+      MP_SMTP_AUTH_ALLOW_INSECURE: 1
+    networks:
+      - mailsender.network
+
+networks:
+  mailsender.network:
+    name: mailsender.network
+    driver: bridge
+    
